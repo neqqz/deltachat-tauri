@@ -15,7 +15,7 @@ pub(crate) async fn drag_file_out(
 
     use drag::DragItem;
     let preview_icon =
-        drag::Image::Raw(include_bytes!("../../../../images/electron-file-drag-out.png").to_vec());
+        drag::Image::Raw(include_bytes!("../../upstream/images/electron-file-drag-out.png").to_vec());
 
     app.run_on_main_thread(move || {
         #[cfg(target_os = "linux")]

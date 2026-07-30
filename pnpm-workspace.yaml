@@ -1,0 +1,23 @@
+# This repo is a single package; the workspace file exists for the `catalog:`
+# entries below and for pnpm's settings.
+#
+# `upstream/` is deliberately NOT a workspace member: its packages use their own
+# `catalog:` references, which resolve against the workspace root that contains
+# them. Keeping it a separate workspace (with its own `pnpm install`) means we
+# don't have to mirror the whole upstream catalog here.
+packages: []
+
+shellEmulator: true
+
+allowBuilds:
+  esbuild: true
+
+# Must match the corresponding entries in upstream/pnpm-workspace.yaml.
+# `pnpm check:upstream-version` enforces this.
+catalog:
+  '@deltachat/jsonrpc-client': 2.59.0
+  '@webxdc/types': ^2.1.2
+  '@types/node': ^22.15.33
+
+minimumReleaseAgeExclude:
+  - '@deltachat/jsonrpc-client'

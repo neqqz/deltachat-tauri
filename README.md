@@ -11,17 +11,24 @@ Requirements
 - on linux you need a few system dependencies:
   - debian/ubuntu `sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf`
 
+This repo carries [deltachat-desktop](https://github.com/deltachat/deltachat-desktop)
+as the `upstream/` submodule and builds its frontend, so clone with submodules
+and install both workspaces:
+
 ```
+git clone --recurse-submodules <this repo>
+# or, in an existing clone: git submodule update --init
+
+pnpm -C upstream install
 pnpm i
 pnpm tauri dev # or pnpm start
 ```
 
 ## Check code
 
-Check javascript (same command as the rest of the project):
-
 ```
-pnpm -w check
+pnpm check:types
+pnpm check:upstream-version   # our version/catalog vs. the pinned upstream
 ```
 
 Format rust code:

@@ -32,9 +32,9 @@ pub(super) async fn get_locales_dir_from_resource_dir(
 
     let places = vec![
         #[cfg(debug_assertions)]
-        PathBuf::from("../../../_locales"), // development (pnpm tauri dev)
+        PathBuf::from("../upstream/_locales"), // development (pnpm tauri dev)
         #[cfg(debug_assertions)]
-        PathBuf::from("../../_locales"), // development (cargo run)
+        PathBuf::from("upstream/_locales"), // development (cargo run)
         resource_dir.join("_locales"),
     ];
 
@@ -67,7 +67,7 @@ pub(super) async fn get_languages(locales_dir: &Path) -> Result<HashMap<String, 
 #[cfg(target_os = "android")]
 use include_dir::{include_dir, Dir};
 #[cfg(target_os = "android")]
-pub static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/../../../_locales");
+pub static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/../upstream/_locales");
 
 #[cfg(target_os = "android")]
 pub(super) async fn get_languages(app: &AppHandle) -> Result<HashMap<String, Language>, Error> {

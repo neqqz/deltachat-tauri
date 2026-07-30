@@ -21,7 +21,7 @@ Validate that it worked (no output means success):
 # when you are at project root
 codesign -v target/release/bundle/macos/deltachat-tauri.app
 # or when you are in the src-tauri dir
-codesign -v ../../../target/release/bundle/macos/deltachat-tauri.app
+codesign -v ../target/release/bundle/macos/deltachat-tauri.app
 ```
 
 > TODO: You also need to embed a provisioning profile

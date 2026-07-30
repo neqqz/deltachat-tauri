@@ -106,8 +106,16 @@ fn get_git_ref() -> String {
         return git_ref;
     }
 
-    let git_describe = gather_process_stdout("git", &["describe", "--tags"])
-        .expect("git describe failed;Hint: you could also set VERSION_INFO_GIT_REF manually");
+    // A clone without release tags (or a tarball build, which has no git at
+    // all) must not fail the build. Fall back to the crate version, which
+    // `pnpm check:upstream-version` keeps in sync with upstream.
+    let git_describe = gather_process_stdout("git", &["describe", "--tags"]).unwrap_or_else(|_| {
+        let version = std::env::var("CARGO_PKG_VERSION").unwrap_or_else(|_| "unknown".to_owned());
+        match gather_process_stdout("git", &["rev-parse", "--short", "HEAD"]) {
+            Ok(sha) => format!("v{version}-g{sha}"),
+            Err(_) => format!("v{version}"),
+        }
+    });
     let git_branch;
 
     if let Ok(git_symbolic_ref) =

@@ -10,27 +10,32 @@
 
 ## Update core
 
-To update core and the other dependencies:
-
-go into repo root then run
-
-```
-./bin/link_core/link_version.js <version>
-```
-
-(the version needs to be specified without `v` in the beginning)
-
-example:
+Core is not pinned here directly — it follows the `upstream/` submodule, so that
+the rust side and the frontend's `@deltachat/jsonrpc-client` always speak the
+same protocol version. To update, move the submodule to an upstream release and
+let the sync script pull the version through:
 
 ```
-./bin/link_core/link_version.js 1.153.0
+git -C upstream fetch --tags origin
+git -C upstream checkout v<version>
+pnpm check:upstream-version --fix
+pnpm -C upstream install && pnpm install
 ```
+
+That writes our `package.json` version, `src-tauri/Cargo.toml` (both the crate
+version and the `deltachat` / `deltachat-jsonrpc` git tags) and the `catalog:`
+entries in `pnpm-workspace.yaml`. Running `pnpm check:upstream-version` without
+`--fix` reports drift instead of fixing it; CI runs it that way.
+
+The weekly `bump-upstream` workflow does the same thing and opens a PR.
 
 ### update core manually if there is a dependency issue
 
-Sometimes there are dependency conflicts, if there are you need to edit `packages/target-tauri/src-tauri/Cargo.toml` manually.
+Sometimes there are dependency conflicts, if there are you need to edit
+`src-tauri/Cargo.toml` manually. Note that `pnpm check:upstream-version` will
+then flag it until upstream catches up.
 
-run `cargo update` in `packages/target-tauri/src-tauri`.
+run `cargo update` in `src-tauri`.
 
 ## Quirks
 
@@ -47,7 +52,7 @@ because some features are only available then (notifications, universal app link
 
 Requirement is that you have access to a valid signing and provisioning profile (easist way is to do this via the apple developer portal websites).
 
-add this to `packages/target-tauri/bundle_resources/Entitlements.plist`:
+add this to `bundle_resources/Entitlements.plist`:
 
 ```xml
 <!-- for debugging, remove again before merging -->

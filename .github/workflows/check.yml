@@ -1,0 +1,40 @@
+name: Code Checks for the JS part of delta tauri
+
+on:
+  pull_request:
+  merge_group:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          show-progress: false
+          persist-credentials: false
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: install dependencies
+        run: |
+          npm i -g pnpm
+          pnpm -C upstream install
+          pnpm install
+
+      # Fails when the upstream/ pointer was moved without adjusting our
+      # version / catalog entries.
+      - name: check upstream sync
+        run: pnpm check:upstream-version
+
+      - name: check types
+        run: pnpm check:types
+
+      # Verifies the frontend of the pinned upstream still builds against our
+      # runtime implementation.
+      - name: build
+        run: pnpm build
