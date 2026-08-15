@@ -1,0 +1,16 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  // keep rust-analyzer out of the target dir that `pnpm tauri dev` locks
+  "rust-analyzer.cargo.targetDir": "target/target-rust-analyzer",
+  "files.eol": "\n",
+  "files.associations": {
+    "*.json5": "jsonc"
+  },
+  // only rust formatting is enforced (CI runs `cargo fmt --all -- --check`);
+  // there is no prettier/eslint setup in this repo, so don't format on save elsewhere
+  "editor.formatOnSave": false,
+  "[rust]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  }
+}

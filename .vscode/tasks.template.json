@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "check:types",
+      "problemMatcher": ["$tsc"],
+      "label": "npm: check:types",
+      "detail": "tsc --noEmit --noUncheckedIndexedAccess false -p runtime-tauri"
+    },
+    {
+      "type": "shell",
+      "command": "cargo fmt --all -- --check",
+      "options": { "cwd": "${workspaceFolder}/src-tauri" },
+      "problemMatcher": [],
+      "label": "cargo: fmt --check",
+      "detail": "same check CI runs"
+    },
+    {
+      "type": "shell",
+      "command": "cargo clippy --workspace --tests --examples",
+      "options": { "cwd": "${workspaceFolder}/src-tauri" },
+      "problemMatcher": ["$rustc"],
+      "label": "cargo: clippy",
+      "detail": "same check CI runs"
+    }
+  ]
+}

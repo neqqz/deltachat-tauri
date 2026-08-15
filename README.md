@@ -28,7 +28,8 @@ pnpm tauri dev # or pnpm start
 
 ```
 pnpm check:types
-pnpm check:upstream-version   # our version/catalog vs. the pinned upstream
+pnpm check:upstream-version
+
 ```
 
 Format rust code:
@@ -44,6 +45,30 @@ pnpm lint
 # or
 cd src-tauri && cargo clippy
 ```
+
+## Following upstream
+
+The pinned `upstream/` submodule is the source of truth for our version numbers,
+so after moving the pointer these have to be brought back in line by hand. The
+reference is upstream's version:
+
+```
+grep -m1 '"version"' upstream/package.json
+```
+
+**1. Our version** must equal it in two places — `version` in `package.json` and
+in the `[package]` section of `src-tauri/Cargo.toml`.
+
+**2. Catalog entries.** Every key in our `pnpm-workspace.yaml` `catalog:` has to
+exist in `upstream/pnpm-workspace.yaml` with the exact same spec string
+
+**3. deltachat-core.** The `deltachat` and `deltachat-jsonrpc` dependencies in
+`src-tauri/Cargo.toml` pull core straight from git, so they must be kept in sync with upstream
+
+Both crates need `tag = "v<X>"` and `version = "<X>"`, where `<X>` is upstream's
+catalog entry for `@deltachat/jsonrpc-client`
+This one is worth double checking: a mismatch here builds fine and only shows up as
+JSON-RPC errors at runtime.
 
 ## Generate the icon
 

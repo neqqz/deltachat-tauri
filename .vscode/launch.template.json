@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Launch dev build",
+      "program": "${workspaceFolder}/target/debug/deltachat-tauri",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      // see "How to debug with CodeLLDB on packaged MacOS app" in Development.md
+      "type": "lldb",
+      "request": "launch",
+      "name": "Launch signed installed tauri app",
+      "program": "/Applications/deltachat-tauri.app/Contents/MacOS/deltachat-tauri",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
