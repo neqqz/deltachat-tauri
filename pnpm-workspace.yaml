@@ -12,6 +12,16 @@ shellEmulator: true
 allowBuilds:
   esbuild: true
 
+overrides:
+  # Local dev override: use the @deltachat/jsonrpc-client built from your own
+  # core fork instead of the pinned npm release below, so the RPC methods
+  # actually called at runtime (e.g. getSelfEncryptionKind/rotateKeypairNow)
+  # match your fork's RPC surface. Path is relative to this file; adjust it
+  # to wherever you checked out your core fork. Also add the same override
+  # in upstream/pnpm-workspace.yaml (deltachat-desktop) so both workspaces
+  # agree. Remove this line to go back to the published npm release.
+  '@deltachat/jsonrpc-client': 'link:../core/deltachat-jsonrpc/typescript'
+
 # Must match the corresponding entries in upstream/pnpm-workspace.yaml.
 # `pnpm check:upstream-version` enforces this.
 catalog:
